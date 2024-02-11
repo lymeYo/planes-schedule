@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-const model = defineModel();
+const model = defineModel<string>();
 
 defineProps<{
   label: string,
-  placeholder: string,
-  isInvalid: boolean,
-  isMain: boolean,
+  placeholder?: string,
+  isInvalid?: boolean,
+  isMain?: boolean,
 }>();
 
 const inputRef = ref<HTMLInputElement | null>(null);

@@ -1,6 +1,6 @@
-export type TflightsData = {
-  start: number | null;
-  end: number | null;
+export type TflightsData<notNull = false> = {
+  start: notNull extends true ? number : number | null;
+  end: notNull extends true ? number : number | null;
 }
 
 export type Tschedule = {

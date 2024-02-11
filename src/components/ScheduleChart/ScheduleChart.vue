@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import Chart from "chart.js/auto";
 import { computed, onMounted, ref, shallowRef, watch } from "vue";
 import { createDataFromFlightDates } from "./utils";
@@ -6,18 +6,18 @@ import { createDataFromFlightDates } from "./utils";
 const props = defineProps(["dateTitle", "data"]);
 const { data, dateTitle } = props;
 
-const ctx = ref(null);
-const chart = shallowRef(null);
+const ctx = ref<HTMLCanvasElement | null>(null);
+const chart = shallowRef<Chart | null>(null);
 
 const renderChart = ({ labels, datasets }) => {
-  chart.value = new Chart(ctx.value, {
+  if (ctx.value) chart.value = new Chart(ctx.value, {
     type: "bar",
     data: {
       labels,
       datasets,
     },
     options: {
-      animations: false,
+      animations: undefined,
       responsive: true,
       maintainAspectRatio: false,
       indexAxis: "y",
@@ -41,8 +41,8 @@ const renderChart = ({ labels, datasets }) => {
         tooltip: {
           displayColors: false,
           callbacks: {
-            title: () => null,
-            label: (context) => {
+            title: () => {},
+            label: (context: any) => { //TODO
               const labelInfo = context.raw[2];
               return [`Вылет: ${labelInfo.startForLabel}`, `Посадка: ${labelInfo.endForLabel}`];
             },
@@ -54,14 +54,18 @@ const renderChart = ({ labels, datasets }) => {
 };
 
 const updateChart = ({ labels, datasets }) => {
+  if (!chart.value) return
+  
   chart.value.data.labels = labels;
   chart.value.data.datasets = datasets;
   chart.value.update();
 };
 
 const resizeChart = (yItemsLength) => {
+  if (!chart.value) return
+
   const BAR_HEIGHT = window.innerWidth > 768 ? 100 : 80;
-  chart.value.canvas.parentNode.style.height = BAR_HEIGHT * yItemsLength + "px";
+  if (chart.value.canvas.parentNode) (chart.value.canvas.parentNode as any).style.height = BAR_HEIGHT * yItemsLength + "px";
 };
 
 const createChartConfig = (scheduleData) => {

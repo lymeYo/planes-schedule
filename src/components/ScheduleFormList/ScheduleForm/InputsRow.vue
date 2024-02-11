@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
 import { isFlightDateValid } from "../../../utils";
 import InputArea from "./InputArea.vue";
@@ -9,10 +9,10 @@ const endFlight = defineModel("endFlight");
 const startFlightInput = ref("");
 const endFlightInput = ref("");
 
-const startFlightRef = ref(null);
+const startFlightRef = ref<InstanceType<typeof InputArea> | null>(null);
 
 onMounted(() => {
-  startFlightRef.value.inputRef.focus(); //фокусирование на только что созданном input
+  startFlightRef.value?.inputRef?.focus(); //фокусирование на только что созданном input
 });
 const inputsValid = computed(() => ({
   start: isFlightDateValid(startFlightInput.value),

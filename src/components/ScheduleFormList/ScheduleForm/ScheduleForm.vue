@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from "vue";
 import InputsRow from "./InputsRow.vue";
-import AddButton from "./AddButton.vue";
 import InputArea from "./InputArea.vue";
+import AddButton from "./AddButton.vue";
 import { Tschedule } from "../../../types";
 
 const emits = defineEmits<{(e: "addFlightsData", id: number): void}>();
@@ -11,7 +11,7 @@ const { schedule } = defineProps<{schedule: Tschedule}>();
 const planeNameRef = ref<InstanceType<typeof InputArea> | null>(null);
 
 onMounted(() => {
-  planeNameRef.value?.inputRef.focus(); //фокусирование на только что созданном input
+  planeNameRef.value?.inputRef?.focus(); //фокусирование на только что созданном input
 });
 </script>
 
