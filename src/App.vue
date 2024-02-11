@@ -5,17 +5,7 @@ import ScheduleChart from "./components/ScheduleChart/ScheduleChart.vue";
 import { isFlightDateValid, transformDataToCharts } from "./utils";
 let id = 0;
 
-const schedules = reactive([
-  {
-    planeName: "G-42" + id,
-    id: id++,
-    flightsData: [
-      { start: "2024-02-09 13:00", end: "2024-02-09 17:00" },
-      { start: "2024-02-09 18:00", end: "2024-02-09 19:00" },
-      { start: "2024-02-10 22:00", end: "2024-02-11 02:00" },
-    ],
-  },
-]);
+const schedules = reactive([]);
 
 const addSchedule = () => {
   const newSchedule = { planeName: "", id: id++, flightsData: [] };
@@ -25,11 +15,22 @@ const addSchedule = () => {
 const addFlightsData = (scheduleId) => {
   schedules
     .find((s) => s.id == scheduleId)
-    ?.flightsData.push({ start: "", end: "" });
+    ?.flightsData.push({ start: null, end: null });
 };
 
 //разбиение данных по датам
 const schedulesForCharts = computed(() => transformDataToCharts(schedules));
+
+// fetch(
+//   "https://api.travelpayouts.com/aviasales/v3/prices_for_dates?origin=MAD&destination=BCN&departure_at=2023-07&return_at=2023-08&unique=false&sorting=price&direct=false&cy=usd&limit=30&page=1&one_way=true&token=9e6e33b030dbd7711e2eb9b87ccd3e07",
+//   {
+//     method: "GET",
+//     mode: "cors",
+//     headers: { "x-access-token": "9e6e33b030dbd7711e2eb9b87ccd3e07" },
+//   }
+// ).then((res) => {
+//   console.log(res);
+// });
 </script>
 
 <template>
