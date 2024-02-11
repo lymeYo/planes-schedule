@@ -26,21 +26,20 @@ export const transformDataToCharts = (schedules) => {
   filteredSchedules.forEach((filterSche) => {
     filterSche.flightsData.forEach((flightData) => {
       const setFlightData = (flight, flightDate) => {
-        const getScheduleByDate = () =>
-          schedulesByDate.find((sche) =>
-            compareDatesWithoutTime(sche.date, flightDate)
-          );
-        if (!getScheduleByDate())
-          schedulesByDate.push({ date: flightDate, data: [] });
-        const scheduleByDate = getScheduleByDate();
+        let scheduleByDate = schedulesByDate.find((sche) =>
+          compareDatesWithoutTime(sche.date, flightDate));
+        if (!scheduleByDate) {
+          scheduleByDate = { date: flightDate, data: [] };
+          schedulesByDate.push(scheduleByDate);
+        }
 
-        const getScheduleByPlaneName = () =>
-          scheduleByDate.data.find(
-            (sche) => sche.planeName == filterSche.planeName
-          );
-        if (!getScheduleByPlaneName())
-          scheduleByDate.data.push({ ...filterSche, flightsData: [] });
-        const scheduleByPlaneName = getScheduleByPlaneName();
+        let scheduleByPlaneName = scheduleByDate.data.find(
+          (sche) => sche.planeName == filterSche.planeName
+        );
+        if (!scheduleByPlaneName) {
+          scheduleByPlaneName = { ...filterSche, flightsData: [] }
+          scheduleByDate.data.push(scheduleByPlaneName);
+        }
 
         scheduleByPlaneName.flightsData.push(flight);
       };
