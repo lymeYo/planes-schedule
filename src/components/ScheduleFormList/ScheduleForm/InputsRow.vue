@@ -58,9 +58,14 @@ const placeholderTemplate = "2023-08-02 14:30";
 
 @media (max-width: 700px) {
   .inputs-row {
+    width: fit-content;
     position: relative;
     flex-direction: column;
     justify-content: initial;
+  }
+
+  .input-area {
+    justify-content: space-between;
   }
 }
 </style>
