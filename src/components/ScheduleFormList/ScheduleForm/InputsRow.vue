@@ -1,35 +1,49 @@
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { isFlightDateValid } from "../../../utils";
 import InputArea from "./InputArea.vue";
 
 const startFlight = defineModel("startFlight");
 const endFlight = defineModel("endFlight");
 
+const startFlightInput = ref("");
+const endFlightInput = ref("");
+
 const startFlightRef = ref(null);
 
 onMounted(() => {
   startFlightRef.value.inputRef.focus(); //фокусирование на только что созданном input
 });
+const inputsValid = computed(() => ({
+  start: isFlightDateValid(startFlightInput.value),
+  end: isFlightDateValid(endFlightInput.value),
+}));
 
-const isStartFlightValid = computed(() => isFlightDateValid(startFlight.value));
-const isEndFlightValid = computed(() => isFlightDateValid(endFlight.value));
+watch(startFlightInput, (startValue) => {
+  if (isFlightDateValid(startValue))
+    startFlight.value = new Date(startValue).getTime();
+});
+watch(endFlightInput, (endValue) => {
+  if (isFlightDateValid(endValue))
+    endFlight.value = new Date(endValue).getTime();
+});
+
 const placeholderTemplate = "2023-08-02 14:30";
 </script>
 
 <template>
   <div class="inputs-row">
     <InputArea
-      v-model="startFlight"
+      v-model="startFlightInput"
       :placeholder="placeholderTemplate"
-      :isInvalid="Boolean(!isStartFlightValid && startFlight.length)"
+      :isInvalid="Boolean(!inputsValid.start && startFlightInput.length)"
       ref="startFlightRef"
       label="Вылет:"
     />
     <InputArea
-      v-model="endFlight"
+      v-model="endFlightInput"
       :placeholder="placeholderTemplate"
-      :isInvalid="Boolean(!isEndFlightValid && endFlight.length)"
+      :isInvalid="Boolean(!inputsValid.end && endFlightInput.length)"
       label="Посадка:"
     />
   </div>
@@ -44,9 +58,14 @@ const placeholderTemplate = "2023-08-02 14:30";
 
 @media (max-width: 700px) {
   .inputs-row {
+    width: fit-content;
     position: relative;
     flex-direction: column;
     justify-content: initial;
+  }
+
+  .input-area {
+    justify-content: space-between;
   }
 }
 </style>

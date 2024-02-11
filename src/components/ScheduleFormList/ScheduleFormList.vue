@@ -1,5 +1,4 @@
 <script setup>
-import { ref, watch } from "vue";
 import AddButton from "./ScheduleForm/AddButton.vue";
 import ScheduleForm from "./ScheduleForm/ScheduleForm.vue";
 
@@ -14,11 +13,12 @@ const addFlightsData = (id) => {
 <template>
   <div class="schedules-list-container">
     <div class="schedules-list-wrapper">
-      <ul class="schedules-list">
+      <ul v-if="schedules.length" class="schedules-list">
         <li v-for="schedule in schedules" :key="schedule.id">
           <ScheduleForm :schedule="schedule" @addFlightsData="addFlightsData" />
         </li>
       </ul>
+      <p v-else>Нет графика расписаний</p>
       <AddButton
         text="Добавить воздушное судно"
         @click="emits('addSchedule')"
