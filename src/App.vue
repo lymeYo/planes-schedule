@@ -1,18 +1,20 @@
-<script setup>
-import { computed, reactive, watch } from "vue";
+<script setup lang="ts">
+import { computed, reactive, onMounted } from "vue";
 import ScheduleFormList from "./components/ScheduleFormList/ScheduleFormList.vue";
 import ScheduleChart from "./components/ScheduleChart/ScheduleChart.vue";
 import { isFlightDateValid, transformDataToCharts } from "./utils";
+import { Tschedule } from "./types";
+
 let id = 0;
 
-const schedules = reactive([]);
+const schedules = reactive<Tschedule[]>([]);
 
 const addSchedule = () => {
   const newSchedule = { planeName: "", id: id++, flightsData: [] };
   schedules.push(newSchedule);
 };
 
-const addFlightsData = (scheduleId) => {
+const addFlightsData = (scheduleId: number) => {
   schedules
     .find((s) => s.id == scheduleId)
     ?.flightsData.push({ start: null, end: null });

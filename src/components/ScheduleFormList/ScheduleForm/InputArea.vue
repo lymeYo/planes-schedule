@@ -1,16 +1,16 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 
 const model = defineModel();
 
-defineProps({
-  label: String,
-  isMain: Boolean,
-  placeholder: String,
-  isInvalid: Boolean,
-});
+defineProps<{
+  label: string,
+  placeholder: string,
+  isInvalid: boolean,
+  isMain: boolean,
+}>();
 
-const inputRef = ref(null);
+const inputRef = ref<HTMLInputElement | null>(null);
 defineExpose({ inputRef });
 </script>
 
@@ -20,7 +20,6 @@ defineExpose({ inputRef });
     <input
       v-model="model"
       :placeholder="placeholder"
-      @input="handleInputDate"
       :class="{ invalid: isInvalid }"
       required
       ref="inputRef"

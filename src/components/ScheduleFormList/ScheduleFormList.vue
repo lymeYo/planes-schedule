@@ -1,11 +1,17 @@
-<script setup>
+<script setup lang="ts">
 import AddButton from "./ScheduleForm/AddButton.vue";
 import ScheduleForm from "./ScheduleForm/ScheduleForm.vue";
 
-const emits = defineEmits(["addFlightsData", "addSchedule"]);
-const { schedules } = defineProps(["schedules"]);
+import type { Tschedule } from "../../types";
 
-const addFlightsData = (id) => {
+const emits = defineEmits<{
+  (e: 'addFlightsData', id: number): void
+  (e: 'addSchedule'): void
+}>()
+
+const { schedules } = defineProps<{ schedules: Tschedule[] }>();
+
+const addFlightsData = (id: number) => {
   emits("addFlightsData", id);
 };
 </script>

@@ -1,6 +1,6 @@
-<script setup>
-const emits = defineEmits(["click"]); //TODO првоерить с click
-defineProps(["text"]);
+<script setup lang="ts">
+const emits = defineEmits<{(e: "click"): void}>(); //TODO првоерить с click
+defineProps<{text: string}>();
 </script>
 
 <template>
