@@ -1,7 +1,7 @@
 <script setup>
 import Chart from "chart.js/auto";
 import { computed, onMounted, onUpdated, ref, shallowRef, watch } from "vue";
-import { createTimeStringFromInt } from "../../utils";
+import { createDataFromFlightDates, createTimeStringFromNum } from "./utils";
 
 const props = defineProps(["dateTitle", "data"]);
 const { data, dateTitle } = props;
@@ -22,7 +22,7 @@ const renderChart = ({ labels, datasets }) => {
       //   },
       //   {
       //     data: [
-      //       [6, 8.5],
+      //       [6, 8.5, { test: "123" }],
       //       [6, 8.33],
       //     ],
       //     backgroundColor: "rgb(70, 196, 169)",
@@ -55,11 +55,9 @@ const renderChart = ({ labels, datasets }) => {
           displayColors: false,
           callbacks: {
             title: () => null,
-            label: function (context) {
-              const startFlightStr = createTimeStringFromInt(context.raw[0]);
-              const endFlightStr = createTimeStringFromInt(context.raw[1]);
-
-              return [`Вылет: ${startFlightStr}`, `Посадка: ${endFlightStr}`];
+            label: (context) => {
+              const labelInfo = context.raw[2];
+              return [`Вылет: ${labelInfo.startForLabel}`, `Посадка: ${labelInfo.endForLabel}`];
             },
           },
         },
@@ -82,6 +80,7 @@ const resizeChart = (yItemsLength) => {
 const createChartConfig = (scheduleData) => {
   //заполнение datasets и labels
   const barClr = "rgb(70, 196, 169)";
+  const barThickness = 50;
   const labels = scheduleData.map((d) => d.planeName);
 
   const datasetsLength = scheduleData.reduce(
@@ -93,12 +92,15 @@ const createChartConfig = (scheduleData) => {
   const datasets = Array.from(Array(datasetsLength)).map(() => ({
     data: [],
     backgroundColor: barClr,
-    barThickness: 50,
+    barThickness,
   }));
 
   scheduleData.forEach(({ flightsData }, dataInd) => {
     flightsData.forEach((flight, flightInd) => {
-      datasets[flightInd].data[dataInd] = [flight.timeStart, flight.timeEnd];
+      datasets[flightInd].data[dataInd] = createDataFromFlightDates(
+        flight,
+        dateTitle
+      );
     });
   });
 
