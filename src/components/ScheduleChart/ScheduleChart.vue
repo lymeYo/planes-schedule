@@ -1,7 +1,7 @@
 <script setup>
 import Chart from "chart.js/auto";
-import { computed, onMounted, onUpdated, ref, shallowRef, watch } from "vue";
-import { createDataFromFlightDates, createTimeStringFromNum } from "./utils";
+import { computed, onMounted, ref, shallowRef, watch } from "vue";
+import { createDataFromFlightDates } from "./utils";
 
 const props = defineProps(["dateTitle", "data"]);
 const { data, dateTitle } = props;
@@ -15,19 +15,6 @@ const renderChart = ({ labels, datasets }) => {
     data: {
       labels,
       datasets,
-      // datasets: [
-      //   {
-      //     data: [null, [(1, 6)]],
-      //     backgroundColor: "rgb(70, 196, 169)",
-      //   },
-      //   {
-      //     data: [
-      //       [6, 8.5, { test: "123" }],
-      //       [6, 8.33],
-      //     ],
-      //     backgroundColor: "rgb(70, 196, 169)",
-      //   },
-      // ],
     },
     options: {
       animations: false,
@@ -107,12 +94,6 @@ const createChartConfig = (scheduleData) => {
   return { labels, datasets };
 };
 
-onMounted(() => {
-  const chartConfig = createChartConfig(data);
-  renderChart(chartConfig);
-  resizeChart(data.length);
-});
-
 watch(
   () => props.data,
   () => {
@@ -121,6 +102,12 @@ watch(
     updateChart(chartConfig);
   }
 );
+
+onMounted(() => {
+  const chartConfig = createChartConfig(data);
+  renderChart(chartConfig);
+  resizeChart(data.length);
+});
 
 const title = computed(() =>
   new Date(dateTitle).toLocaleDateString("ru-RU", {
