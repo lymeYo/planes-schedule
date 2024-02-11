@@ -20,17 +20,6 @@ const addFlightsData = (scheduleId) => {
 
 //разбиение данных по датам
 const schedulesForCharts = computed(() => transformDataToCharts(schedules));
-
-// fetch(
-//   "https://api.travelpayouts.com/aviasales/v3/prices_for_dates?origin=MAD&destination=BCN&departure_at=2023-07&return_at=2023-08&unique=false&sorting=price&direct=false&cy=usd&limit=30&page=1&one_way=true&token=9e6e33b030dbd7711e2eb9b87ccd3e07",
-//   {
-//     method: "GET",
-//     mode: "cors",
-//     headers: { "x-access-token": "9e6e33b030dbd7711e2eb9b87ccd3e07" },
-//   }
-// ).then((res) => {
-//   console.log(res);
-// });
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref } from "vue";
 import InputsRow from "./InputsRow.vue";
 import AddButton from "./AddButton.vue";
 import InputArea from "./InputArea.vue";

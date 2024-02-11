@@ -1,8 +1,8 @@
 import { compareDatesWithoutTime } from "../../utils";
 
+//создание поля data для datasets в Chart
 export const createDataFromFlightDates = (flight, curDateStr) => {
   const curDate = new Date(curDateStr);
-
   
   const startTimeNum = createTimeNumFromDate(new Date(flight.start))
   const startTimeStr = createTimeStringFromNum(startTimeNum)
@@ -23,10 +23,10 @@ export const createDataFromFlightDates = (flight, curDateStr) => {
   }
 };
 
-
-
+//из объекта даты создание времени в виде десятичного числа
 export const createTimeNumFromDate = (date) => date.getHours() + +(date.getMinutes() / 60).toFixed(2);
 
+//время из десятичного числа в строчное (из 12.5 в "12:30")
 export const createTimeStringFromNum = (timeNum) => {
   const hours = ("0" + parseInt(timeNum)).slice(-2);
   const minutes = ("0" + Math.round(60 * (timeNum % 1))).slice(-2);

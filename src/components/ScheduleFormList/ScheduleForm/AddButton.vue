@@ -1,5 +1,5 @@
 <script setup>
-const emits = defineEmits(["click"]); //TODO првоерить с click
+const emits = defineEmits(["click"]);
 defineProps(["text"]);
 </script>
 
