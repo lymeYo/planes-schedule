@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed, reactive, onMounted } from "vue";
+import { computed, reactive } from "vue";
 import ScheduleFormList from "./components/ScheduleFormList/ScheduleFormList.vue";
 import ScheduleChart from "./components/ScheduleChart/ScheduleChart.vue";
-import { isFlightDateValid, transformDataToCharts } from "./utils";
+import { transformDataToCharts } from "./utils";
 import { Tschedule } from "./types";
 
 let id = 0;

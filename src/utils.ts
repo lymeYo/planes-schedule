@@ -22,10 +22,11 @@ export const transformDataToCharts = (schedules: Tschedule[]) => {
 
   schedules.forEach((schedule) => {
     schedule.flightsData.forEach((flightData) => {
-      if (!(flightData.start && flightData.end && flightData.start <= flightData.end)) return
+      const isFlightDataNotNull = (fl): fl is TflightsData<true> => Boolean(fl.start && fl.end)
+      if (!(isFlightDataNotNull(flightData) && flightData.start <= flightData.end)) return
       
       const setFlightData = (
-        flight: TflightsData,
+        flight: TflightsData<true>,
         flightDate: number
       ) => {
         let scheduleByDate = schedulesByDate.find((sche) =>
@@ -48,8 +49,6 @@ export const transformDataToCharts = (schedules: Tschedule[]) => {
 
         scheduleByPlaneName.flightsData.push(flight);
       };
-
-
       
       if (compareDatesWithoutTime(flightData.start, flightData.end)) {
         setFlightData(flightData, flightData.start);

@@ -3,13 +3,13 @@ export type TflightsData<notNull = false> = {
   end: notNull extends true ? number : number | null;
 }
 
-export type Tschedule = {
+export type Tschedule<flightsNotNull = false> = {
   planeName: string;
   id: number;
-  flightsData: TflightsData[];
+  flightsData: TflightsData<flightsNotNull>[];
 }
 
 export type TchartSchedule = {
   date: number,
-  data: Tschedule[]
+  data: Tschedule<true>[]
 }

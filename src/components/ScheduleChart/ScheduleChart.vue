@@ -2,14 +2,16 @@
 import Chart from "chart.js/auto";
 import { computed, onMounted, ref, shallowRef, watch } from "vue";
 import { createDataFromFlightDates } from "./utils";
+import type { Tschedule } from "../../types";
+import type { Tdataset } from "./types";
 
-const props = defineProps(["dateTitle", "data"]);
+const props = defineProps<{dateTitle: number, data: Tschedule<true>[]}>();
 const { data, dateTitle } = props;
 
 const ctx = ref<HTMLCanvasElement | null>(null);
-const chart = shallowRef<Chart | null>(null);
-
-const renderChart = ({ labels, datasets }) => {
+const chart = shallowRef<any>(null);
+  
+const renderChart = ({ labels, datasets }: { labels: string[], datasets: Tdataset[] }) => {
   if (ctx.value) chart.value = new Chart(ctx.value, {
     type: "bar",
     data: {
@@ -53,7 +55,7 @@ const renderChart = ({ labels, datasets }) => {
   });
 };
 
-const updateChart = ({ labels, datasets }) => {
+const updateChart = ({ labels, datasets }: { labels: string[], datasets: Tdataset[] }) => {
   if (!chart.value) return
   
   chart.value.data.labels = labels;
@@ -61,18 +63,18 @@ const updateChart = ({ labels, datasets }) => {
   chart.value.update();
 };
 
-const resizeChart = (yItemsLength) => {
+const resizeChart = (yItemsLength: number) => {
   if (!chart.value) return
 
   const BAR_HEIGHT = window.innerWidth > 768 ? 100 : 80;
   if (chart.value.canvas.parentNode) (chart.value.canvas.parentNode as any).style.height = BAR_HEIGHT * yItemsLength + "px";
 };
 
-const createChartConfig = (scheduleData) => {
+const createChartConfig = (scheduleData: Tschedule<true>[]) => {
   //заполнение datasets и labels
   const barClr = "rgb(70, 196, 169)";
   const barThickness = 50;
-  const labels = scheduleData.map((d) => d.planeName);
+  const labels: string[] = scheduleData.map((d) => d.planeName);
 
   const datasetsLength = scheduleData.reduce(
     (max, value) =>
@@ -80,7 +82,7 @@ const createChartConfig = (scheduleData) => {
     0
   );
 
-  const datasets = Array.from(Array(datasetsLength)).map(() => ({
+  const datasets: Tdataset[] = Array.from(Array(datasetsLength)).map(() => ({
     data: [],
     backgroundColor: barClr,
     barThickness,
@@ -88,10 +90,11 @@ const createChartConfig = (scheduleData) => {
 
   scheduleData.forEach(({ flightsData }, dataInd) => {
     flightsData.forEach((flight, flightInd) => {
-      datasets[flightInd].data[dataInd] = createDataFromFlightDates(
+      const newData = createDataFromFlightDates(
         flight,
         dateTitle
       );
+      if (newData) datasets[flightInd].data[dataInd] = newData
     });
   });
 
