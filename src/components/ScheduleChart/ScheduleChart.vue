@@ -3,7 +3,7 @@ import Chart from "chart.js/auto";
 import { computed, onMounted, ref, shallowRef, watch } from "vue";
 import { createDataFromFlightDates } from "./utils";
 import type { Tschedule } from "../../types";
-import type { Tdataset } from "./types";
+import type { Tdataset, TdatasetData } from "./types";
 
 const props = defineProps<{dateTitle: number, data: Tschedule<true>[]}>();
 const { data, dateTitle } = props;
@@ -44,8 +44,9 @@ const renderChart = ({ labels, datasets }: { labels: string[], datasets: Tdatase
           displayColors: false,
           callbacks: {
             title: () => {},
-            label: (context: any) => { //TODO
-              const labelInfo = context.raw[2];
+            label: (context) => { 
+              const raw = context.raw as TdatasetData //нехорошо
+              const labelInfo = raw[2];
               return [`Вылет: ${labelInfo.startForLabel}`, `Посадка: ${labelInfo.endForLabel}`];
             },
           },
