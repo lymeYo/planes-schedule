@@ -2,7 +2,7 @@ import { TflightsData } from "../../types";
 import { compareDatesWithoutTime } from "../../utils";
 import { TdatasetData } from "./types";
 
-export const createDataFromFlightDates = (flight: TflightsData, curDateStr: string): TdatasetData | null => {
+export const createDataFromFlightDates = (flight: TflightsData | TflightsData<true>, curDateStr: string): TdatasetData | null => {
   if (!flight.start || !flight.end) return null
   const curDate = new Date(curDateStr);
   
