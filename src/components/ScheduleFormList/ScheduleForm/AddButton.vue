@@ -19,8 +19,10 @@ defineProps<{text: string}>();
   transition: background-color 0.2s, color 0.2s;
 }
 
-.add-plane-btn:hover {
-  color: var(--bg-second-clr);
-  background-color: var(--main-clr);
+@media (hover) {
+  .add-plane-btn:hover {
+    color: var(--bg-second-clr);
+    background-color: var(--main-clr);
+  }
 }
 </style>
