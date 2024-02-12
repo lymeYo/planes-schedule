@@ -13,3 +13,5 @@ export type TchartSchedule = {
   date: number,
   data: Tschedule<true>[]
 }
+
+export const isFlightDataNotNull = (data: TflightsData | TflightsData<true>): data is TflightsData<true> => Boolean(data.start && data.end)

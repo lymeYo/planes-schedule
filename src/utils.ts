@@ -1,4 +1,4 @@
-import { TchartSchedule, TflightsData, Tschedule } from "./types";
+import { TchartSchedule, TflightsData, Tschedule, isFlightDataNotNull } from "./types";
 
 const flightDateRegexp = new RegExp(
   /[0-9]{4}-[0-9]{2}-[0-9]{2} (0?[0-9]|1[0-9]|2[0-3]):(0[0-9]|[0-5][0-9])/
@@ -22,7 +22,6 @@ export const transformDataToCharts = (schedules: Tschedule[]) => {
 
   schedules.forEach((schedule) => {
     schedule.flightsData.forEach((flightData) => {
-      const isFlightDataNotNull = (fl): fl is TflightsData<true> => Boolean(fl.start && fl.end)
       if (!(isFlightDataNotNull(flightData) && flightData.start <= flightData.end)) return
       
       const setFlightData = (
